@@ -1,0 +1,60 @@
+# FallAvert Configuration File
+# Default made by SirBlobman
+# Made for version ${bukkit.plugin.version}
+
+# You should only use this option if an issue occurs.
+# SirBlobman may ask you to enable it if you ask for help.
+#
+# Default: false
+debug: false
+
+# Should FallAvert ignore players that have access to flight?
+#
+# Default: true
+allow flying: true
+
+commands:
+  # Should all commands be blocked and the list be allowed commands?
+  #
+  # Default: false
+  whitelist mode: false
+
+  # A list of commands to block.
+  # Sub-commands cannot be blocked at this time.
+  # If 'whitelist mode' is true, this is the list of commands to allow.
+  #
+  # Default:
+  # - "/tp"
+  # - "/tpa"
+  # - "/fly"
+  # - "/warp"
+  # - "/island"
+  list:
+  - "/tp"
+  - "/tpa"
+  - "/fly"
+  - "/warp"
+  - "/island"
+
+punishments:
+  # Set this to true if players should be punished for logging out in the air.
+  #
+  # Default: false
+  enabled: false
+
+  # A list of commands to be executed as punishments
+  # These commands will be executed by console
+  #
+  # Placeholders:
+  # - {player}: The username of the player that logged out
+  #
+  # Default:
+  # - "kill {player}"
+  commands:
+  - "kill {player}"
+
+messages:
+  blocked command: "&c&oYou cannot do &a{command}&c&o while falling!"
+  reload: "&aSuccessfully reloaded config.yml for FallAvert."
+  not player: "&cYou are not a Player!"
+  invalid target: "&cInvalid target!"
