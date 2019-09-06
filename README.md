@@ -1,2 +1,2 @@
 # FallAvert
- Prevent players from doing thing while they're in the air.
+ Prevent players from doing commands while they're in the air.
