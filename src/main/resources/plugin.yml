@@ -1,14 +1,23 @@
 name: "${bukkit.plugin.name}"
 prefix: "${bukkit.plugin.prefix}"
 description: "${bukkit.plugin.description}"
-author: "SirBlobman"
+website: "https://www.spigotmc.org/resources/40289/"
 
 main: "${bukkit.plugin.main}"
 version: "${bukkit.plugin.version}"
+api-version: "1.13"
+
+authors:
+  - "SirBlobman"
 
 commands:
   fallavert:
     description: "Main command for FallAvert."
-    usage: "/<command> reload\n/<command> check <player>"
-    aliases: [fa, favert, falla]
+    usage: |-
+      /<command> reload
+      /<command> check <player>
     permission: "fallavert.command.fallavert"
+    aliases:
+      - "fa"
+      - "favert"
+      - "falla"

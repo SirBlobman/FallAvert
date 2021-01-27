@@ -1,4 +1,7 @@
-package com.SirBlobman.fallavert;
+package com.github.sirblobman.fall.avert.command;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -8,12 +11,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
+import com.github.sirblobman.fall.avert.FallAvertPlugin;
+import com.github.sirblobman.fall.avert.listener.ListenerFallAvert;
 
 public class CommandFallAvert implements CommandExecutor {
-    private final FallAvert plugin;
-    public CommandFallAvert(FallAvert plugin) {
-        this.plugin = plugin;
+    private final FallAvertPlugin plugin;
+    public CommandFallAvert(FallAvertPlugin plugin) {
+        this.plugin = Objects.requireNonNull(plugin, "plugin must not be null!");
     }
 
     @Override
@@ -46,20 +50,20 @@ public class CommandFallAvert implements CommandExecutor {
 
     private boolean check(CommandSender sender, String[] args) {
         if(args.length < 1 && !(sender instanceof Player)) {
-            String message = this.plugin.getConfigMessage("not player");
+            String message = this.plugin.getConfigMessage("not-player");
             sender.sendMessage(message);
             return true;
         }
 
         Player target = args.length < 1 ? (Player) sender : Bukkit.getPlayer(args[0]);
         if(target == null) {
-            String message = this.plugin.getConfigMessage("invalid target");
+            String message = this.plugin.getConfigMessage("invalid-target");
             sender.sendMessage(message);
             return false;
         }
         String targetName = target.getName();
 
-        boolean isFalling = ListenFallAvert.isFalling(target);
+        boolean isFalling = ListenerFallAvert.isFalling(target);
         Block block = target.getLocation().getBlock();
         Block below = block.getRelative(BlockFace.DOWN);
 

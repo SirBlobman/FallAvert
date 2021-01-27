@@ -11,13 +11,13 @@ debug: false
 # Should FallAvert ignore players that have access to flight?
 #
 # Default: true
-allow flying: true
+allow-flying: true
 
 commands:
   # Should all commands be blocked and the list be allowed commands?
   #
   # Default: false
-  whitelist mode: false
+  whitelist-mode: false
 
   # A list of commands to block.
   # Sub-commands cannot be blocked at this time.
@@ -30,11 +30,11 @@ commands:
   # - "/warp"
   # - "/island"
   list:
-  - "/tp"
-  - "/tpa"
-  - "/fly"
-  - "/warp"
-  - "/island"
+    - "/tp"
+    - "/tpa"
+    - "/fly"
+    - "/warp"
+    - "/island"
 
 punishments:
   # Set this to true if players should be punished for logging out in the air.
@@ -54,7 +54,7 @@ punishments:
   - "kill {player}"
 
 messages:
-  blocked command: "&c&oYou cannot do &a{command}&c&o while falling!"
+  blocked-command: "&c&oYou cannot do &a{command}&c&o while falling!"
   reload: "&aSuccessfully reloaded config.yml for FallAvert."
-  not player: "&cYou are not a Player!"
-  invalid target: "&cInvalid target!"
+  not-player: "&cYou are not a Player!"
+  invalid-target: "&cInvalid target!"

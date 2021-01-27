@@ -1,0 +1,84 @@
+[SIZE=5][B]Supported Spigot Versions:[/B][/SIZE]
+1.8.8, 1.9.4, 1.10.2, 1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5
+
+[SIZE=5][COLOR=#FF0000][B]Description:[/B][/COLOR][/SIZE]
+While a player is falling, they will not be allowed to do any commands you put on the blacklist. Falling is detected by checking the block below the player. If the block is AIR they are falling. There is an option called "allow flying" to allow commands when the player has flight permissions
+
+[SIZE=5][COLOR=#FF0000][B]Commands:[/B][/COLOR][/SIZE]
+[LIST]
+[*][B]/fallavert reload[/B]: Reload the configuration file.
+[*][B]/fallavert check <player>[/B]: Check if a player is falling or not.
+[/LIST]
+
+[SIZE=5][COLOR=#FF0000][B]Configuration:[/B][/COLOR][/SIZE]
+[SPOILER='config.yml']
+[CODE=YAML]
+# FallAvert Configuration File
+# Default made by SirBlobman
+# Made for version 4.0.0
+
+# You should only use this option if an issue occurs.
+# SirBlobman may ask you to enable it if you ask for help.
+#
+# Default: false
+debug: false
+
+# Should FallAvert ignore players that have access to flight?
+#
+# Default: true
+allow-flying: true
+
+commands:
+  # Should all commands be blocked and the list be allowed commands?
+  #
+  # Default: false
+  whitelist-mode: false
+
+  # A list of commands to block.
+  # Sub-commands cannot be blocked at this time.
+  # If 'whitelist mode' is true, this is the list of commands to allow.
+  #
+  # Default:
+  # - "/tp"
+  # - "/tpa"
+  # - "/fly"
+  # - "/warp"
+  # - "/island"
+  list:
+    - "/tp"
+    - "/tpa"
+    - "/fly"
+    - "/warp"
+    - "/island"
+
+punishments:
+  # Set this to true if players should be punished for logging out in the air.
+  #
+  # Default: false
+  enabled: false
+
+  # A list of commands to be executed as punishments
+  # These commands will be executed by console
+  #
+  # Placeholders:
+  # - {player}: The username of the player that logged out
+  #
+  # Default:
+  # - "kill {player}"
+  commands:
+  - "kill {player}"
+
+messages:
+  blocked-command: "&c&oYou cannot do &a{command}&c&o while falling!"
+  reload: "&aSuccessfully reloaded config.yml for FallAvert."
+  not-player: "&cYou are not a Player!"
+  invalid-target: "&cInvalid target!"
+[/CODE]
+[/SPOILER]
+
+[SIZE=5][B][COLOR=#FF0000]Help and Support:[/COLOR][/B][/SIZE]
+Click the image to join my discord for support. You can also join if you have feature requests or if you just want to chat with other users.
+[URL='https://discord.gg/XMg2agT'][IMG]https://discordapp.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png[/IMG][/URL]
+
+[SIZE=5][B][COLOR=#FF0000]Extra Information:[/COLOR][/B][/SIZE]
+Please do not use a review to leave bug reports or errors. I am not able to help you through a review.

@@ -1,6 +1,9 @@
-package com.SirBlobman.fallavert;
+package com.github.sirblobman.fall.avert.listener;
 
-import com.SirBlobman.fallavert.FallAvert;
+import java.util.List;
+import java.util.Objects;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,13 +18,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.List;
-import java.util.logging.Level;
+import com.github.sirblobman.fall.avert.FallAvertPlugin;
 
-public class ListenFallAvert implements Listener {
-    private final FallAvert plugin;
-    public ListenFallAvert(FallAvert plugin) {
-        this.plugin = plugin;
+public class ListenerFallAvert implements Listener {
+    private final FallAvertPlugin plugin;
+    public ListenerFallAvert(FallAvertPlugin plugin) {
+        this.plugin = Objects.requireNonNull(plugin, "plugin must not be null!");
     }
 
     @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
@@ -29,7 +31,7 @@ public class ListenFallAvert implements Listener {
         Player player = e.getPlayer();
         if(!isFalling(player)) return;
 
-        boolean allowFlying = this.plugin.getConfig().getBoolean("allow flying");
+        boolean allowFlying = this.plugin.getConfig().getBoolean("allow-flying");
         if(allowFlying) {
             boolean allowFlight = player.getAllowFlight();
             boolean isFlying = player.isFlying();
@@ -45,7 +47,7 @@ public class ListenFallAvert implements Listener {
         if(isBlocked(mainCommand)) {
             e.setCancelled(true);
 
-            String message = this.plugin.getConfigMessage("blocked command").replace("{command}", command);
+            String message = this.plugin.getConfigMessage("blocked-command").replace("{command}", command);
             player.sendMessage(message);
         }
     }
@@ -55,7 +57,7 @@ public class ListenFallAvert implements Listener {
         Player player = e.getPlayer();
         if(!isFalling(player)) return;
 
-        boolean allowFlying = this.plugin.getConfig().getBoolean("allow flying");
+        boolean allowFlying = this.plugin.getConfig().getBoolean("allow-flying");
         if(allowFlying) {
             boolean allowFlight = player.getAllowFlight();
             boolean isFlying = player.isFlying();
@@ -82,7 +84,7 @@ public class ListenFallAvert implements Listener {
     private boolean isBlocked(String command) {
         FileConfiguration config = this.plugin.getConfig();
         List<String> commandList = config.getStringList("commands.list");
-        boolean whitelistMode = config.getBoolean("commands.whitelist mode");
+        boolean whitelistMode = config.getBoolean("commands.whitelist-mode");
 
         if(whitelistMode) return !commandList.contains(command);
         return commandList.contains(command);
@@ -95,8 +97,9 @@ public class ListenFallAvert implements Listener {
         List<String> punishCommands = this.plugin.getConfig().getStringList("punishments.commands");
         for(String command : punishCommands) {
             command = command.replace("{player}", player.getName());
-            try {Bukkit.dispatchCommand(console, command);}
-            catch (Exception ex) {
+            try {
+                Bukkit.dispatchCommand(console, command);
+            } catch (Exception ex) {
                 this.plugin.getLogger().log(Level.WARNING, "An error occurred while executing a punishment command.", ex);
             }
         }

@@ -1,4 +1,6 @@
-package com.SirBlobman.fallavert;
+package com.github.sirblobman.fall.avert;
+
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -6,15 +8,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.logging.Logger;
+import com.github.sirblobman.fall.avert.command.CommandFallAvert;
+import com.github.sirblobman.fall.avert.listener.ListenerFallAvert;
 
-public class FallAvert extends JavaPlugin {
+public class FallAvertPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
 
         PluginManager manager = Bukkit.getPluginManager();
-        manager.registerEvents(new ListenFallAvert(this), this);
+        manager.registerEvents(new ListenerFallAvert(this), this);
 
         getCommand("fallavert").setExecutor(new CommandFallAvert(this));
     }
@@ -22,7 +25,6 @@ public class FallAvert extends JavaPlugin {
     public String getConfigMessage(String path) {
         FileConfiguration config = getConfig();
         String message = config.getString("messages." + path);
-
         return (message == null ? "" : ChatColor.translateAlternateColorCodes('&', message));
     }
 
