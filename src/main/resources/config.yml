@@ -1,8 +1,4 @@
-# FallAvert Configuration File
-# Default made by SirBlobman
-# Made for version ${bukkit.plugin.version}
-
-# You should only use this option if an issue occurs.
+# This option should only be used if an issue occurs.
 # SirBlobman may ask you to enable it if you ask for help.
 #
 # Default: false

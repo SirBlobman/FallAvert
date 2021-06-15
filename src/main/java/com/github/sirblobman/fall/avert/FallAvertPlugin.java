@@ -11,11 +11,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.github.sirblobman.fall.avert.command.CommandFallAvert;
 import com.github.sirblobman.fall.avert.listener.ListenerFallAvert;
 
-public class FallAvertPlugin extends JavaPlugin {
+public final class FallAvertPlugin extends JavaPlugin {
+    @Override
+    public void onLoad() {
+        saveDefaultConfig();
+    }
+
     @Override
     public void onEnable() {
-        saveDefaultConfig();
-
         PluginManager manager = Bukkit.getPluginManager();
         manager.registerEvents(new ListenerFallAvert(this), this);
 

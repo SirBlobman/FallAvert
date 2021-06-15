@@ -8,6 +8,7 @@
 	
 	<name>Fall Avert</name>
 	<description>A plugin that prevents players from doing certain actions while they are in the air.</description>
+	<url>https://www.spigotmc.org/resources/40289/</url>
 	
 	<properties>
         <java.version>1.8</java.version>
@@ -22,7 +23,7 @@
 		<bukkit.plugin.description>${project.description}</bukkit.plugin.description>
         
 		<bukkit.plugin.main>com.github.sirblobman.fall.avert.FallAvertPlugin</bukkit.plugin.main>
-		<bukkit.plugin.version>4.0.0</bukkit.plugin.version>
+		<bukkit.plugin.version>4.1.0</bukkit.plugin.version>
 	</properties>
 	
 	<repositories>

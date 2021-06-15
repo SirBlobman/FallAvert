@@ -22,6 +22,7 @@ import com.github.sirblobman.fall.avert.FallAvertPlugin;
 
 public class ListenerFallAvert implements Listener {
     private final FallAvertPlugin plugin;
+
     public ListenerFallAvert(FallAvertPlugin plugin) {
         this.plugin = Objects.requireNonNull(plugin, "plugin must not be null!");
     }
