@@ -33,7 +33,9 @@ public final class FallAvertPlugin extends JavaPlugin {
 
     public void debug(String message) {
         FileConfiguration config = getConfig();
-        if(!config.getBoolean("debug")) return;
+        if(!config.getBoolean("debug")) {
+            return;
+        }
 
         Logger logger = getLogger();
         logger.info("[Debug] " + message);

@@ -20,7 +20,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.github.sirblobman.fall.avert.FallAvertPlugin;
 
-public class ListenerFallAvert implements Listener {
+public final class ListenerFallAvert implements Listener {
     private final FallAvertPlugin plugin;
 
     public ListenerFallAvert(FallAvertPlugin plugin) {
@@ -30,13 +30,17 @@ public class ListenerFallAvert implements Listener {
     @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
     public void beforeCommand(PlayerCommandPreprocessEvent e) {
         Player player = e.getPlayer();
-        if(!isFalling(player)) return;
+        if(!isFalling(player)) {
+            return;
+        }
 
         boolean allowFlying = this.plugin.getConfig().getBoolean("allow-flying");
         if(allowFlying) {
             boolean allowFlight = player.getAllowFlight();
             boolean isFlying = player.isFlying();
-            if(allowFlight && isFlying) return;
+            if(allowFlight && isFlying) {
+                return;
+            }
         }
 
         String command = e.getMessage();
@@ -56,13 +60,17 @@ public class ListenerFallAvert implements Listener {
     @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
-        if(!isFalling(player)) return;
+        if(!isFalling(player)) {
+            return;
+        }
 
         boolean allowFlying = this.plugin.getConfig().getBoolean("allow-flying");
         if(allowFlying) {
             boolean allowFlight = player.getAllowFlight();
             boolean isFlying = player.isFlying();
-            if(allowFlight && isFlying) return;
+            if(allowFlight && isFlying) {
+                return;
+            }
         }
 
         boolean shouldPunish = this.plugin.getConfig().getBoolean("punishments.enabled");
@@ -75,7 +83,9 @@ public class ListenerFallAvert implements Listener {
         Location location = player.getLocation();
         Block block = location.getBlock();
         Material type = block.getType();
-        if(type.isSolid() && !type.isOccluding()) return false;
+        if(type.isSolid() && !type.isOccluding()) {
+            return false;
+        }
 
         Block below = block.getRelative(BlockFace.DOWN);
         Material belowType = below.getType();
@@ -92,9 +102,11 @@ public class ListenerFallAvert implements Listener {
     }
 
     private void punish(Player player) {
-        if(player == null) return;
-        CommandSender console = Bukkit.getConsoleSender();
+        if(player == null) {
+            return;
+        }
 
+        CommandSender console = Bukkit.getConsoleSender();
         List<String> punishCommands = this.plugin.getConfig().getStringList("punishments.commands");
         for(String command : punishCommands) {
             command = command.replace("{player}", player.getName());

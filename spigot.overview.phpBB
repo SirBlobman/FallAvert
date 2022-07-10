@@ -1,8 +1,10 @@
 [SIZE=5][B]Supported Spigot Versions:[/B][/SIZE]
-1.8.8, 1.12.2, 1.16.5, 1.17
+1.8.8, 1.12.2, 1.16.5, 1.18.2, 1.19
 
 [SIZE=5][COLOR=#FF0000][B]Description:[/B][/COLOR][/SIZE]
-While a player is falling, they will not be allowed to do any commands you put on the blacklist. Falling is detected by checking the block below the player. If the block is AIR they are falling. There is an option called "allow flying" to allow commands when the player has flight permissions
+While a player is falling, they will not be allowed to do any commands you put on the blacklist.
+Falling is detected by checking the block below the player. If the block is AIR they are falling.
+There is an option called "allow flying" to allow commands when the player has flight permissions
 
 [SIZE=5][COLOR=#FF0000][B]Commands:[/B][/COLOR][/SIZE]
 [LIST]
@@ -77,7 +79,8 @@ messages:
 [/SPOILER]
 
 [SIZE=5][B][COLOR=#FF0000]Help and Support:[/COLOR][/B][/SIZE]
-Click the image to join my discord for support. You can also join if you have feature requests or if you just want to chat with other users.
+Click the image to join my discord for support.
+You can also join if you have feature requests or if you just want to chat with other users.
 [URL='https://discord.gg/XMq2agT'][IMG]https://discordapp.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png[/IMG][/URL]
 
 [SIZE=5][B][COLOR=#FF0000]Extra Information:[/COLOR][/B][/SIZE]
