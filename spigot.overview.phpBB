@@ -1,10 +1,10 @@
 [SIZE=5][B]Supported Spigot Versions:[/B][/SIZE]
-1.8.8, 1.12.2, 1.16.5, 1.18.2, 1.19
+1.8.8, 1.12.2, 1.16.5, 1.18.2, 1.19.2
 
 [SIZE=5][COLOR=#FF0000][B]Description:[/B][/COLOR][/SIZE]
-While a player is falling, they will not be allowed to do any commands you put on the blacklist.
+While a player is falling, they will not be allowed to execute any commands in the block list.
 Falling is detected by checking the block below the player. If the block is AIR they are falling.
-There is an option called "allow flying" to allow commands when the player has flight permissions
+There is an option called "allow flying" to allow commands when the player has flight permissions.
 
 [SIZE=5][COLOR=#FF0000][B]Commands:[/B][/COLOR][/SIZE]
 [LIST]
@@ -15,15 +15,11 @@ There is an option called "allow flying" to allow commands when the player has f
 [SIZE=5][COLOR=#FF0000][B]Configuration:[/B][/COLOR][/SIZE]
 [SPOILER='config.yml']
 [CODE=YAML]
-# FallAvert Configuration File
-# Default made by SirBlobman
-# Made for version 4.0.0
-
-# You should only use this option if an issue occurs.
+# This option should only be used if an issue occurs.
 # SirBlobman may ask you to enable it if you ask for help.
 #
 # Default: false
-debug: false
+debug-mode: false
 
 # Should FallAvert ignore players that have access to flight?
 #
@@ -31,27 +27,23 @@ debug: false
 allow-flying: true
 
 commands:
-  # Should all commands be blocked and the list be allowed commands?
-  #
-  # Default: false
-  whitelist-mode: false
-
-  # A list of commands to block.
-  # Sub-commands cannot be blocked at this time.
-  # If 'whitelist mode' is true, this is the list of commands to allow.
-  #
-  # Default:
-  # - "/tp"
-  # - "/tpa"
-  # - "/fly"
-  # - "/warp"
-  # - "/island"
-  list:
+  # Which commands should not work while flying?
+  # DO NOT forget the `/` in front of the commands.
+  # You can add "*" to the list to block ALL commands.
+  blocked-command-list:
     - "/tp"
     - "/tpa"
     - "/fly"
     - "/warp"
     - "/island"
+
+  # Which commands are allowed during combat?
+  # This list is used if you want to un-block a command that is blocked by the other list.
+  # You can add "*" to the list to allow ALL commands.
+  #
+  # Extra Information: This list overrides the blocked command list
+  allowed-command-list:
+    - "/tpo"
 
 punishments:
   # Set this to true if players should be punished for logging out in the air.

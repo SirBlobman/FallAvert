@@ -1,2 +1,2 @@
 # FallAvert
-A plugin that prevents players from doing certain actions while they are in the air.
+A plugin that prevents some actions while a player is in the air.

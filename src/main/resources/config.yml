@@ -2,7 +2,7 @@
 # SirBlobman may ask you to enable it if you ask for help.
 #
 # Default: false
-debug: false
+debug-mode: false
 
 # Should FallAvert ignore players that have access to flight?
 #
@@ -10,27 +10,23 @@ debug: false
 allow-flying: true
 
 commands:
-  # Should all commands be blocked and the list be allowed commands?
-  #
-  # Default: false
-  whitelist-mode: false
-
-  # A list of commands to block.
-  # Sub-commands cannot be blocked at this time.
-  # If 'whitelist mode' is true, this is the list of commands to allow.
-  #
-  # Default:
-  # - "/tp"
-  # - "/tpa"
-  # - "/fly"
-  # - "/warp"
-  # - "/island"
-  list:
+  # Which commands should not work while flying?
+  # DO NOT forget the `/` in front of the commands.
+  # You can add "*" to the list to block ALL commands.
+  blocked-command-list:
     - "/tp"
     - "/tpa"
     - "/fly"
     - "/warp"
     - "/island"
+
+  # Which commands are allowed during combat?
+  # This list is used if you want to un-block a command that is blocked by the other list.
+  # You can add "*" to the list to allow ALL commands.
+  #
+  # Extra Information: This list overrides the blocked command list
+  allowed-command-list:
+    - "/tpo"
 
 punishments:
   # Set this to true if players should be punished for logging out in the air.

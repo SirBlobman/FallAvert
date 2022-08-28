@@ -3,12 +3,9 @@ package com.github.sirblobman.fall.avert.listener;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -17,6 +14,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.util.StringUtil;
 
 import com.github.sirblobman.fall.avert.FallAvertPlugin;
 
@@ -30,12 +29,11 @@ public final class ListenerFallAvert implements Listener {
     @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
     public void beforeCommand(PlayerCommandPreprocessEvent e) {
         Player player = e.getPlayer();
-        if(!isFalling(player)) {
+        if(isNotFalling(player)) {
             return;
         }
 
-        boolean allowFlying = this.plugin.getConfig().getBoolean("allow-flying");
-        if(allowFlying) {
+        if(isAllowFlying()) {
             boolean allowFlight = player.getAllowFlight();
             boolean isFlying = player.isFlying();
             if(allowFlight && isFlying) {
@@ -44,28 +42,24 @@ public final class ListenerFallAvert implements Listener {
         }
 
         String command = e.getMessage();
-        if(!command.startsWith("/")) command = "/" + command;
+        if(!command.startsWith("/")) {
+            command = ("/" + command);
+        }
 
-        int spaceIndex = command.indexOf(" ");
-        String mainCommand = command.substring(0, spaceIndex < 0 ? command.length() : spaceIndex).toLowerCase();
-
-        if(isBlocked(mainCommand)) {
+        if(isBlocked(command)) {
             e.setCancelled(true);
-
-            String message = this.plugin.getConfigMessage("blocked-command").replace("{command}", command);
-            player.sendMessage(message);
+            sendBlockedCommandMessage(player, command);
         }
     }
 
     @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
-        if(!isFalling(player)) {
+        if(isNotFalling(player)) {
             return;
         }
 
-        boolean allowFlying = this.plugin.getConfig().getBoolean("allow-flying");
-        if(allowFlying) {
+        if(isAllowFlying()) {
             boolean allowFlight = player.getAllowFlight();
             boolean isFlying = player.isFlying();
             if(allowFlight && isFlying) {
@@ -73,32 +67,89 @@ public final class ListenerFallAvert implements Listener {
             }
         }
 
-        boolean shouldPunish = this.plugin.getConfig().getBoolean("punishments.enabled");
-        if(shouldPunish) punish(player);
+        if(shouldPunish()) {
+            punish(player);
+        }
     }
 
-    public static boolean isFalling(Player player) {
-        if(player == null) return false;
+    public void register() {
+        FallAvertPlugin plugin = getPlugin();
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(this, plugin);
+    }
 
-        Location location = player.getLocation();
-        Block block = location.getBlock();
-        Material type = block.getType();
-        if(type.isSolid() && !type.isOccluding()) {
-            return false;
+    private FallAvertPlugin getPlugin() {
+        return this.plugin;
+    }
+
+    private FileConfiguration getConfiguration() {
+        FallAvertPlugin plugin = getPlugin();
+        return plugin.getConfig();
+    }
+
+    private boolean isNotFalling(Player player) {
+        FallAvertPlugin plugin = getPlugin();
+        return !plugin.isFalling(player);
+    }
+
+    private boolean isAllowFlying() {
+        FileConfiguration configuration = getConfiguration();
+        return configuration.getBoolean("allow-flying", true);
+    }
+
+    private boolean shouldPunish() {
+        FileConfiguration configuration = getConfiguration();
+        return configuration.getBoolean("punishments.enabled", false);
+    }
+
+    private List<String> getBlockedCommands() {
+        FileConfiguration configuration = getConfiguration();
+        return configuration.getStringList("commands.blocked-command-list");
+    }
+
+    private List<String> getAllowedCommands() {
+        FileConfiguration configuration = getConfiguration();
+        return configuration.getStringList("commands.allowed-command-list");
+    }
+
+    private List<String> getPunishmentCommands() {
+        FileConfiguration configuration = getConfiguration();
+        return configuration.getStringList("punishments.commands");
+    }
+
+    private boolean startsWithAny(String command, List<String> values) {
+        if(values.contains("*")) {
+            return true;
         }
 
-        Block below = block.getRelative(BlockFace.DOWN);
-        Material belowType = below.getType();
-        return (belowType == Material.AIR || belowType.name().endsWith("_AIR"));
+        for(String value : values) {
+            if(StringUtil.startsWithIgnoreCase(command, value)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean isBlocked(String command) {
-        FileConfiguration config = this.plugin.getConfig();
-        List<String> commandList = config.getStringList("commands.list");
-        boolean whitelistMode = config.getBoolean("commands.whitelist-mode");
+        List<String> allowList = getAllowedCommands();
+        if(startsWithAny(command, allowList)) {
+            return false;
+        }
 
-        if(whitelistMode) return !commandList.contains(command);
-        return commandList.contains(command);
+        List<String> blockList = getBlockedCommands();
+        return startsWithAny(command, blockList);
+    }
+
+    private void sendBlockedCommandMessage(Player player, String command) {
+        FallAvertPlugin plugin = getPlugin();
+        String messageFormat = plugin.getConfigMessage("blocked-command");
+        if(messageFormat.isEmpty()) {
+            return;
+        }
+
+        String message = messageFormat.replace("{command}", command);
+        player.sendMessage(message);
     }
 
     private void punish(Player player) {
@@ -106,15 +157,25 @@ public final class ListenerFallAvert implements Listener {
             return;
         }
 
+        String playerName = player.getName();
+        List<String> punishmentCommandList = getPunishmentCommands();
+        for (String punishmentCommand : punishmentCommandList) {
+            String replacedCommand = punishmentCommand.replace("{player}", playerName);
+            runCommand(replacedCommand);
+        }
+    }
+
+    private void runCommand(String command) {
+        FallAvertPlugin plugin = getPlugin();
         CommandSender console = Bukkit.getConsoleSender();
-        List<String> punishCommands = this.plugin.getConfig().getStringList("punishments.commands");
-        for(String command : punishCommands) {
-            command = command.replace("{player}", player.getName());
-            try {
-                Bukkit.dispatchCommand(console, command);
-            } catch (Exception ex) {
-                this.plugin.getLogger().log(Level.WARNING, "An error occurred while executing a punishment command.", ex);
-            }
+
+        try {
+            plugin.printDebug("Executing command '" + command + "' in console.");
+            boolean result = Bukkit.dispatchCommand(console, command);
+            plugin.printDebug("Command Result: " + result);
+        } catch(Exception ex) {
+            Logger logger = plugin.getLogger();
+            logger.log(Level.WARNING, "An error occurred while executing a console command:", ex);
         }
     }
 }
