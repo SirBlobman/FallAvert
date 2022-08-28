@@ -26,48 +26,48 @@ public final class ListenerFallAvert implements Listener {
         this.plugin = Objects.requireNonNull(plugin, "plugin must not be null!");
     }
 
-    @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void beforeCommand(PlayerCommandPreprocessEvent e) {
         Player player = e.getPlayer();
-        if(isNotFalling(player)) {
+        if (isNotFalling(player)) {
             return;
         }
 
-        if(isAllowFlying()) {
+        if (isAllowFlying()) {
             boolean allowFlight = player.getAllowFlight();
             boolean isFlying = player.isFlying();
-            if(allowFlight && isFlying) {
+            if (allowFlight && isFlying) {
                 return;
             }
         }
 
         String command = e.getMessage();
-        if(!command.startsWith("/")) {
+        if (!command.startsWith("/")) {
             command = ("/" + command);
         }
 
-        if(isBlocked(command)) {
+        if (isBlocked(command)) {
             e.setCancelled(true);
             sendBlockedCommandMessage(player, command);
         }
     }
 
-    @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
-        if(isNotFalling(player)) {
+        if (isNotFalling(player)) {
             return;
         }
 
-        if(isAllowFlying()) {
+        if (isAllowFlying()) {
             boolean allowFlight = player.getAllowFlight();
             boolean isFlying = player.isFlying();
-            if(allowFlight && isFlying) {
+            if (allowFlight && isFlying) {
                 return;
             }
         }
 
-        if(shouldPunish()) {
+        if (shouldPunish()) {
             punish(player);
         }
     }
@@ -118,12 +118,12 @@ public final class ListenerFallAvert implements Listener {
     }
 
     private boolean startsWithAny(String command, List<String> values) {
-        if(values.contains("*")) {
+        if (values.contains("*")) {
             return true;
         }
 
-        for(String value : values) {
-            if(StringUtil.startsWithIgnoreCase(command, value)) {
+        for (String value : values) {
+            if (StringUtil.startsWithIgnoreCase(command, value)) {
                 return true;
             }
         }
@@ -133,7 +133,7 @@ public final class ListenerFallAvert implements Listener {
 
     private boolean isBlocked(String command) {
         List<String> allowList = getAllowedCommands();
-        if(startsWithAny(command, allowList)) {
+        if (startsWithAny(command, allowList)) {
             return false;
         }
 
@@ -144,7 +144,7 @@ public final class ListenerFallAvert implements Listener {
     private void sendBlockedCommandMessage(Player player, String command) {
         FallAvertPlugin plugin = getPlugin();
         String messageFormat = plugin.getConfigMessage("blocked-command");
-        if(messageFormat.isEmpty()) {
+        if (messageFormat.isEmpty()) {
             return;
         }
 
@@ -153,7 +153,7 @@ public final class ListenerFallAvert implements Listener {
     }
 
     private void punish(Player player) {
-        if(player == null) {
+        if (player == null) {
             return;
         }
 
@@ -173,7 +173,7 @@ public final class ListenerFallAvert implements Listener {
             plugin.printDebug("Executing command '" + command + "' in console.");
             boolean result = Bukkit.dispatchCommand(console, command);
             plugin.printDebug("Command Result: " + result);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             Logger logger = plugin.getLogger();
             logger.log(Level.WARNING, "An error occurred while executing a console command:", ex);
         }

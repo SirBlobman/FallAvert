@@ -34,11 +34,11 @@ public final class FallAvertPlugin extends JavaPlugin {
     public String getConfigMessage(String path) {
         FileConfiguration configuration = getConfig();
         String message = configuration.getString("messages." + path);
-        if(message == null) {
+        if (message == null) {
             return path;
         }
 
-        if(message.isEmpty()) {
+        if (message.isEmpty()) {
             return "";
         }
 
@@ -48,7 +48,7 @@ public final class FallAvertPlugin extends JavaPlugin {
     public boolean isFalling(Player player) {
         printDebug("isFalling method called.");
 
-        if(player == null) {
+        if (player == null) {
             printDebug("Null players are never falling.");
             return false;
         }
@@ -60,7 +60,7 @@ public final class FallAvertPlugin extends JavaPlugin {
         printDebug("Block Location: " + block.getLocation());
         printDebug("Block Type: " + blockType);
 
-        if(blockType.isSolid() && !blockType.isOccluding()) {
+        if (blockType.isSolid() && !blockType.isOccluding()) {
             printDebug("Block type is solid and not occluding, not falling.");
             return false;
         }
@@ -80,7 +80,7 @@ public final class FallAvertPlugin extends JavaPlugin {
     }
 
     public void printDebug(String message) {
-        if(isDebugModeDisabled()) {
+        if (isDebugModeDisabled()) {
             return;
         }
 

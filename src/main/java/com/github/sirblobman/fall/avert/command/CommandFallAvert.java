@@ -32,15 +32,15 @@ public final class CommandFallAvert implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if(args.length == 1) {
+        if (args.length == 1) {
             List<String> valueList = Arrays.asList("reload", "reloadconfig", "config", "check", "info");
             return StringUtil.copyPartialMatches(args[0], valueList, new ArrayList<>());
         }
 
-        if(args.length == 2) {
+        if (args.length == 2) {
             String sub = args[0].toLowerCase(Locale.US);
             List<String> subValueList = Arrays.asList("check", "info");
-            if(subValueList.contains(sub)) {
+            if (subValueList.contains(sub)) {
                 Collection<? extends Player> onlinePlayerCollection = Bukkit.getOnlinePlayers();
                 Set<String> onlinePlayerNameSet = onlinePlayerCollection.stream().map(Player::getName)
                         .collect(Collectors.toSet());
@@ -53,13 +53,13 @@ public final class CommandFallAvert implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(args.length < 1) {
+        if (args.length < 1) {
             return false;
         }
 
         String sub = args[0].toLowerCase(Locale.US);
         String[] newArgs = (args.length < 2 ? new String[0] : Arrays.copyOfRange(args, 1, args.length));
-        switch(sub) {
+        switch (sub) {
             case "reload":
             case "reloadconfig":
             case "config":
@@ -69,7 +69,8 @@ public final class CommandFallAvert implements TabExecutor {
             case "info":
                 return commandCheck(sender, newArgs);
 
-            default: break;
+            default:
+                break;
         }
 
         return false;
@@ -78,7 +79,7 @@ public final class CommandFallAvert implements TabExecutor {
     public void register() {
         FallAvertPlugin plugin = getPlugin();
         PluginCommand pluginCommand = plugin.getCommand("fallavert");
-        if(pluginCommand == null) {
+        if (pluginCommand == null) {
             Logger logger = plugin.getLogger();
             logger.warning("Command 'fallavert' is missing in the plugin.yml");
             return;
@@ -103,14 +104,14 @@ public final class CommandFallAvert implements TabExecutor {
 
     private boolean commandCheck(CommandSender sender, String[] args) {
         FallAvertPlugin plugin = getPlugin();
-        if(args.length < 1 && !(sender instanceof Player)) {
+        if (args.length < 1 && !(sender instanceof Player)) {
             String message = plugin.getConfigMessage("not-player");
             sender.sendMessage(message);
             return true;
         }
 
         Player target = (args.length < 1 ? (Player) sender : Bukkit.getPlayerExact(args[0]));
-        if(target == null) {
+        if (target == null) {
             String message = plugin.getConfigMessage("invalid-target");
             sender.sendMessage(message);
             return false;
