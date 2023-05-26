@@ -2,6 +2,8 @@ package com.github.sirblobman.fall.avert;
 
 import java.util.logging.Logger;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,8 +15,6 @@ import net.md_5.bungee.api.ChatColor;
 
 import com.github.sirblobman.fall.avert.command.CommandFallAvert;
 import com.github.sirblobman.fall.avert.listener.ListenerFallAvert;
-
-import org.jetbrains.annotations.NotNull;
 
 public final class FallAvertPlugin extends JavaPlugin {
     @Override
@@ -30,8 +30,7 @@ public final class FallAvertPlugin extends JavaPlugin {
         registerCommands();
     }
 
-    @NotNull
-    public String getConfigMessage(String path) {
+    public @NotNull String getConfigMessage(@NotNull String path) {
         FileConfiguration configuration = getConfig();
         String message = configuration.getString("messages." + path);
         if (message == null) {
@@ -45,13 +44,8 @@ public final class FallAvertPlugin extends JavaPlugin {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    public boolean isFalling(Player player) {
+    public boolean isFalling(@NotNull Player player) {
         printDebug("isFalling method called.");
-
-        if (player == null) {
-            printDebug("Null players are never falling.");
-            return false;
-        }
 
         Location location = player.getLocation();
         Block block = location.getBlock();
@@ -79,7 +73,7 @@ public final class FallAvertPlugin extends JavaPlugin {
         return !configuration.getBoolean("debug-mode", false);
     }
 
-    public void printDebug(String message) {
+    public void printDebug(@NotNull String message) {
         if (isDebugModeDisabled()) {
             return;
         }

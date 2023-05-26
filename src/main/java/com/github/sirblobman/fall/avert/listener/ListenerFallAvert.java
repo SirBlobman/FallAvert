@@ -1,9 +1,10 @@
 package com.github.sirblobman.fall.avert.listener;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.jetbrains.annotations.NotNull;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -22,8 +23,8 @@ import com.github.sirblobman.fall.avert.FallAvertPlugin;
 public final class ListenerFallAvert implements Listener {
     private final FallAvertPlugin plugin;
 
-    public ListenerFallAvert(FallAvertPlugin plugin) {
-        this.plugin = Objects.requireNonNull(plugin, "plugin must not be null!");
+    public ListenerFallAvert(@NotNull FallAvertPlugin plugin) {
+        this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -78,16 +79,16 @@ public final class ListenerFallAvert implements Listener {
         pluginManager.registerEvents(this, plugin);
     }
 
-    private FallAvertPlugin getPlugin() {
+    private @NotNull FallAvertPlugin getPlugin() {
         return this.plugin;
     }
 
-    private FileConfiguration getConfiguration() {
+    private @NotNull FileConfiguration getConfiguration() {
         FallAvertPlugin plugin = getPlugin();
         return plugin.getConfig();
     }
 
-    private boolean isNotFalling(Player player) {
+    private boolean isNotFalling(@NotNull Player player) {
         FallAvertPlugin plugin = getPlugin();
         return !plugin.isFalling(player);
     }
@@ -102,22 +103,22 @@ public final class ListenerFallAvert implements Listener {
         return configuration.getBoolean("punishments.enabled", false);
     }
 
-    private List<String> getBlockedCommands() {
+    private @NotNull List<String> getBlockedCommands() {
         FileConfiguration configuration = getConfiguration();
         return configuration.getStringList("commands.blocked-command-list");
     }
 
-    private List<String> getAllowedCommands() {
+    private @NotNull List<String> getAllowedCommands() {
         FileConfiguration configuration = getConfiguration();
         return configuration.getStringList("commands.allowed-command-list");
     }
 
-    private List<String> getPunishmentCommands() {
+    private @NotNull List<String> getPunishmentCommands() {
         FileConfiguration configuration = getConfiguration();
         return configuration.getStringList("punishments.commands");
     }
 
-    private boolean startsWithAny(String command, List<String> values) {
+    private boolean startsWithAny(@NotNull String command, @NotNull List<String> values) {
         if (values.contains("*")) {
             return true;
         }
@@ -131,7 +132,7 @@ public final class ListenerFallAvert implements Listener {
         return false;
     }
 
-    private boolean isBlocked(String command) {
+    private boolean isBlocked(@NotNull String command) {
         List<String> allowList = getAllowedCommands();
         if (startsWithAny(command, allowList)) {
             return false;
@@ -141,7 +142,7 @@ public final class ListenerFallAvert implements Listener {
         return startsWithAny(command, blockList);
     }
 
-    private void sendBlockedCommandMessage(Player player, String command) {
+    private void sendBlockedCommandMessage(@NotNull Player player, @NotNull String command) {
         FallAvertPlugin plugin = getPlugin();
         String messageFormat = plugin.getConfigMessage("blocked-command");
         if (messageFormat.isEmpty()) {
@@ -152,11 +153,7 @@ public final class ListenerFallAvert implements Listener {
         player.sendMessage(message);
     }
 
-    private void punish(Player player) {
-        if (player == null) {
-            return;
-        }
-
+    private void punish(@NotNull Player player) {
         String playerName = player.getName();
         List<String> punishmentCommandList = getPunishmentCommands();
         for (String punishmentCommand : punishmentCommandList) {
@@ -165,7 +162,7 @@ public final class ListenerFallAvert implements Listener {
         }
     }
 
-    private void runCommand(String command) {
+    private void runCommand(@NotNull String command) {
         FallAvertPlugin plugin = getPlugin();
         CommandSender console = Bukkit.getConsoleSender();
 

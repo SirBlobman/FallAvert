@@ -6,10 +6,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import org.jetbrains.annotations.NotNull;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -26,8 +27,8 @@ import com.github.sirblobman.fall.avert.FallAvertPlugin;
 public final class CommandFallAvert implements TabExecutor {
     private final FallAvertPlugin plugin;
 
-    public CommandFallAvert(FallAvertPlugin plugin) {
-        this.plugin = Objects.requireNonNull(plugin, "plugin must not be null!");
+    public CommandFallAvert(@NotNull FallAvertPlugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
@@ -89,11 +90,11 @@ public final class CommandFallAvert implements TabExecutor {
         pluginCommand.setTabCompleter(this);
     }
 
-    private FallAvertPlugin getPlugin() {
+    private @NotNull FallAvertPlugin getPlugin() {
         return this.plugin;
     }
 
-    private boolean commandReload(CommandSender sender) {
+    private boolean commandReload(@NotNull CommandSender sender) {
         FallAvertPlugin plugin = getPlugin();
         plugin.reloadConfig();
 
@@ -102,7 +103,7 @@ public final class CommandFallAvert implements TabExecutor {
         return true;
     }
 
-    private boolean commandCheck(CommandSender sender, String[] args) {
+    private boolean commandCheck(@NotNull CommandSender sender, String @NotNull [] args) {
         FallAvertPlugin plugin = getPlugin();
         if (args.length < 1 && !(sender instanceof Player)) {
             String message = plugin.getConfigMessage("not-player");
